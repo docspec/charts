@@ -1,0 +1,68 @@
+name: Release Please
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: release-please-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    outputs:
+      release_created: ${{ steps.rp.outputs['charts/common--release_created'] }}
+      tag_name: ${{ steps.rp.outputs['charts/common--tag_name'] }}
+    steps:
+      - name: Run release-please
+        id: rp
+        uses: googleapis/release-please-action@5c625bfb5d1ff62eadeeb3772007f7f66fdcf071 # v4
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+  publish:
+    needs: release-please
+    if: needs.release-please.outputs.release_created == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          ref: ${{ needs.release-please.outputs.tag_name }}
+
+      - name: Set up Helm
+        uses: azure/setup-helm@dda3372f752e03dde6b3237bc9431cdc2f7a02a2 # v5
+        with:
+          version: v4.1.4
+
+      - name: Validate version matches tag
+        run: |
+          CHART_VERSION=$(grep '^version:' charts/common/Chart.yaml | awk '{print $2}')
+          TAG_VERSION="${{ needs.release-please.outputs.tag_name }}"
+          TAG_VERSION="${TAG_VERSION#common-v}"
+          if [ "$CHART_VERSION" != "$TAG_VERSION" ]; then
+            echo "ERROR: Chart.yaml version ($CHART_VERSION) does not match tag ($TAG_VERSION)"
+            exit 1
+          fi
+          echo "Version match confirmed: $CHART_VERSION"
+
+      - name: Login to GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | helm registry login ghcr.io --username ${{ github.actor }} --password-stdin
+
+      - name: Package chart
+        run: helm package charts/common
+
+      - name: Push to GHCR
+        run: helm push common-*.tgz oci://ghcr.io/docspec/charts
+
+      - name: Logout from GHCR
+        if: always()
+        run: helm registry logout ghcr.io
