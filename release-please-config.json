@@ -1,0 +1,13 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "include-v-in-tag": true,
+  "include-component-in-tag": true,
+  "bootstrap-sha": "95221c4e4a754fd386e59c1dd419b842dd0a6dc9",
+  "packages": {
+    "charts/common": {
+      "release-type": "helm",
+      "component": "common",
+      "changelog-path": "CHANGELOG.md"
+    }
+  }
+}

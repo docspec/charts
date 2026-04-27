@@ -1,0 +1,47 @@
+name: Lint
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "charts/**"
+      - "ci/**"
+      - ".github/workflows/lint.yaml"
+
+jobs:
+  helm-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      - name: Set up Helm
+        uses: azure/setup-helm@dda3372f752e03dde6b3237bc9431cdc2f7a02a2 # v5
+        with:
+          version: v4.1.4
+
+      - name: Lint common chart
+        run: helm lint charts/common
+
+  template-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      - name: Set up Helm
+        uses: azure/setup-helm@dda3372f752e03dde6b3237bc9431cdc2f7a02a2 # v5
+        with:
+          version: v4.1.4
+
+      - name: Build dependencies
+        run: helm dependency update ci/common/
+
+      - name: Template with defaults
+        run: helm template test ci/common/
+
+      - name: Template with overrides
+        run: helm template test ci/common/ --set fullnameOverride=override-test --set global.imageRegistry=test.io
+
+      - name: Template with storage class
+        run: helm template test ci/common/ --set global.storageClass=fast-ssd
