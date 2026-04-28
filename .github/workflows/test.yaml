@@ -3,14 +3,8 @@ name: Test
 on:
   pull_request:
     branches: [main]
-    paths:
-      - "charts/**"
-      - "ci/**"
   push:
     branches: [main]
-    paths:
-      - "charts/**"
-      - "ci/**"
 
 jobs:
   unit-test:
