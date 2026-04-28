@@ -47,7 +47,7 @@ jobs:
           version: v4.1.4
 
       - name: Build dependencies
-        run: helm dependency build ci/common/
+        run: helm dependency update ci/common/
 
       - name: Template with defaults
         run: helm template test ci/common/
