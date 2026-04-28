@@ -64,7 +64,7 @@ jobs:
         run: helm package charts/common
 
       - name: Push to GHCR
-        run: helm push common-*.tgz oci://ghcr.io/docspec/charts
+        run: helm push common-*.tgz oci://ghcr.io/docspec
 
       - name: Logout from GHCR
         if: always()
