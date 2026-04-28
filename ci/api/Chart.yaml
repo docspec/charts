@@ -1,0 +1,9 @@
+apiVersion: v2
+name: api-test
+description: CI test chart for docspec/api
+version: 0.0.1
+type: application
+dependencies:
+  - name: api
+    version: "*"
+    repository: "file://../../charts/api"

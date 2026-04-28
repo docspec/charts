@@ -8,6 +8,11 @@
       "release-type": "helm",
       "component": "common",
       "changelog-path": "CHANGELOG.md"
+    },
+    "charts/api": {
+      "release-type": "helm",
+      "component": "api",
+      "changelog-path": "CHANGELOG.md"
     }
   }
 }
