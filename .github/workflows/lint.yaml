@@ -11,6 +11,9 @@ on:
 jobs:
   helm-lint:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
@@ -19,12 +22,23 @@ jobs:
         uses: azure/setup-helm@dda3372f752e03dde6b3237bc9431cdc2f7a02a2 # v5
         with:
           version: v4.1.4
+
+      - name: Login to GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | helm registry login ghcr.io --username ${{ github.actor }} --password-stdin
 
       - name: Lint common chart
         run: helm lint charts/common
 
+      - name: Lint api chart
+        run: |
+          helm dependency update charts/api
+          helm lint charts/api
+
   template-test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
@@ -34,14 +48,28 @@ jobs:
         with:
           version: v4.1.4
 
-      - name: Build dependencies
+      - name: Login to GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | helm registry login ghcr.io --username ${{ github.actor }} --password-stdin
+
+      - name: Build dependencies (common)
         run: helm dependency update ci/common/
 
-      - name: Template with defaults
+      - name: Build dependencies (api)
+        run: |
+          helm dependency update charts/api
+          helm dependency update ci/api/
+
+      - name: Template common with defaults
         run: helm template test ci/common/
 
-      - name: Template with overrides
+      - name: Template common with overrides
         run: helm template test ci/common/ --set fullnameOverride=override-test --set global.imageRegistry=test.io
 
-      - name: Template with storage class
+      - name: Template common with storage class
         run: helm template test ci/common/ --set global.storageClass=fast-ssd
+
+      - name: Template api with defaults
+        run: helm template test ci/api/
+
+      - name: Template api with overrides
+        run: helm template test ci/api/ --set api.fullnameOverride=override-test --set api.image.tag=latest

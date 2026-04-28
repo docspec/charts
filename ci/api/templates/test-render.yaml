@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "api.names.fullname" . }}-test
+  namespace: {{ include "api.names.namespace" . }}
+  labels: {{- include "api.labels.standard" . | nindent 4 }}
+data:
+  fullname: {{ include "api.names.fullname" . }}
+  name: {{ include "api.names.name" . }}
+  chart: {{ include "api.names.chart" . }}
+  image: {{ include "api.image" . }}
+  serviceAccountName: {{ include "api.serviceAccountName" . }}
+  matchLabels: |
+    {{- include "api.labels.matchLabels" . | nindent 4 }}

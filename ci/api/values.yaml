@@ -1,0 +1,55 @@
+## Top-level values for parent-chart test template (test-render.yaml calls
+## api.image / api.serviceAccountName with the parent's context).
+image:
+  registry: ghcr.io
+  repository: docspecio/api
+  tag: "3.0.1"
+
+serviceAccount:
+  create: true
+  name: ""
+
+global:
+  imageRegistry: ""
+  imagePullSecrets: []
+
+## Subchart values — Helm scopes these into the api subchart's context.
+api:
+  replicaCount: 1
+
+  image:
+    registry: ghcr.io
+    repository: docspecio/api
+    tag: "3.0.1"
+
+  serviceAccount:
+    create: true
+
+  ingress:
+    enabled: true
+    hostname: test.docspec.local
+    path: /
+    pathType: Prefix
+
+  autoscaling:
+    enabled: false
+
+  resourcesPreset: "micro"
+  resources: {}
+
+  extraEnvVars:
+    - name: TEST_VAR
+      value: "test"
+
+  containerPorts:
+    http: 4000
+
+  podDisruptionBudget:
+    enabled: true
+    minAvailable: 1
+    maxUnavailable: ""
+
+  networkPolicy:
+    enabled: true
+    allowExternal: true
+    allowExternalEgress: false
