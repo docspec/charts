@@ -1,0 +1,18 @@
+{{- $localPort := .Values.service.port -}}
+docspec API is now installed.
+
+Get the API URL:
+{{- if .Values.ingress.enabled }}
+  http{{ if .Values.ingress.tls }}s{{ end }}://{{ .Values.ingress.hostname }}/conversion
+{{- else }}
+  kubectl port-forward svc/{{ include "api.names.fullname" . }} {{ $localPort }}:{{ .Values.service.port }} -n {{ include "api.names.namespace" . }}
+  Then: http://localhost:{{ $localPort }}/conversion
+{{- end }}
+
+Health check:
+  curl http://localhost:{{ $localPort }}/health
+
+Convert a document:
+  curl -X POST http://localhost:{{ $localPort }}/conversion \
+    -H "Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document" \
+    --data-binary @document.docx
