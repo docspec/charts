@@ -36,9 +36,12 @@ spec:
       {{- with .Values.tolerations }}
       tolerations: {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.extraVolumes }}
-      volumes: {{- toYaml . | nindent 8 }}
-      {{- end }}
+      volumes:
+        - name: tmp
+          emptyDir: {}
+        {{- with .Values.extraVolumes }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
       containers:
         - name: api
           image: {{ include "api.image" . }}
@@ -57,6 +60,9 @@ spec:
           resources: {{- include "common.resources.preset.apply" (dict "type" .Values.resourcesPreset "resources" .Values.resources) | nindent 12 }}
           livenessProbe: {{- toYaml .Values.livenessProbe | nindent 12 }}
           readinessProbe: {{- toYaml .Values.readinessProbe | nindent 12 }}
-          {{- with .Values.extraVolumeMounts }}
-          volumeMounts: {{- toYaml . | nindent 12 }}
-          {{- end }}
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            {{- with .Values.extraVolumeMounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
