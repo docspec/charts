@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/docspec/charts/compare/api-v0.1.1...api-v0.1.2) (2026-06-01)
+
+
+### Bug Fixes
+
+* rename ([ce6c267](https://github.com/docspec/charts/commit/ce6c267ea694c393972591191a5a6d52bd20e6a0))
+
 ## [0.1.1](https://github.com/docspec/charts/compare/api-v0.1.0...api-v0.1.1) (2026-04-28)
 
 
