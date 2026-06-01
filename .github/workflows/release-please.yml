@@ -57,7 +57,7 @@ jobs:
             echo "Publishing $chart_name from $chart_path"
             helm dependency update "$chart_path"
             helm package "$chart_path" --destination .
-            helm push ${chart_name}-*.tgz oci://ghcr.io/docspec
+            helm push ${chart_name}-*.tgz oci://ghcr.io/docspec/charts
           done
 
       - name: Logout from GHCR

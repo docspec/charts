@@ -1,3 +1,4 @@
+# Published as oci://ghcr.io/docspec/charts/common
 apiVersion: v2
 name: common
 description: A Helm library chart for docspec common template helpers
