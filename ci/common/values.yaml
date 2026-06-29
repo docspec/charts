@@ -7,7 +7,7 @@ namespaceOverride: ""
 image:
   registry: docker.io
   repository: nginx
-  tag: "1.25"
+  tag: "1.31"
   pullPolicy: IfNotPresent
   pullSecrets: []
 
