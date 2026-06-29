@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/docspec/charts/compare/common-v0.1.1...common-v0.2.0) (2026-06-29)
+
+
+### Features
+
+* **common:** fall back to chart appVersion when image.tag is empty ([977736d](https://github.com/docspec/charts/commit/977736dbc4d74df6914c4e0cbbb1627f441cbd9e))
+
 ## [0.1.1](https://github.com/docspec/charts/compare/common-v0.1.0...common-v0.1.1) (2026-06-01)
 
 
