@@ -1,7 +1,20 @@
 {{/*
 Return the proper image name.
+
+Resolution order for the image reference:
+  1. `imageRoot.digest` (rendered as `repo@digest`).
+  2. `imageRoot.tag` (rendered as `repo:tag`).
+  3. `chart.AppVersion` if `chart` is supplied and `tag` is empty
+     (rendered as `repo:appVersion`).
+  4. Empty string (legacy behavior — emits `repo:`).
+
+Passing `chart` lets a consumer chart default `image.tag` to `""` in its
+values.yaml and have every release of the chart pin to the matching image
+tag automatically, as long as release tooling (e.g. release-please) keeps
+`Chart.yaml`'s `appVersion` in lockstep with the published image.
+
 Usage:
-{{ include "common.images.image" (dict "imageRoot" .Values.path.to.the.image "global" $) }}
+{{ include "common.images.image" (dict "imageRoot" .Values.image "global" .Values.global "chart" .Chart) }}
 */}}
 {{- define "common.images.image" -}}
 {{- $registryName := .imageRoot.registry -}}
@@ -16,6 +29,8 @@ Usage:
 {{- if .imageRoot.digest }}
     {{- $separator = "@" -}}
     {{- $termination = .imageRoot.digest | toString -}}
+{{- else if and (not .imageRoot.tag) .chart -}}
+    {{- $termination = .chart.AppVersion | toString -}}
 {{- end -}}
 {{- if $registryName }}
     {{- printf "%s/%s%s%s" $registryName $repositoryName $separator $termination -}}
