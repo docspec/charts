@@ -3,7 +3,7 @@
 image:
   registry: ghcr.io
   repository: docspecio/api
-  tag: "3.0.1"
+  tag: "3.0.2"
 
 serviceAccount:
   create: true
@@ -20,7 +20,7 @@ api:
   image:
     registry: ghcr.io
     repository: docspecio/api
-    tag: "3.0.1"
+    tag: "3.0.2"
 
   serviceAccount:
     create: true
