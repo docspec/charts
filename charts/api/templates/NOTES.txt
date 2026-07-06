@@ -16,3 +16,16 @@ Convert a document:
   curl -X POST http://localhost:{{ $localPort }}/conversion \
     -H "Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document" \
     --data-binary @document.docx
+{{- if .Values.metrics.enabled }}
+
+Prometheus metrics:
+{{- if .Values.metrics.serviceMonitor.enabled }}
+  Scraped via ServiceMonitor {{ include "api.names.fullname" . }} in namespace {{ include "api.names.namespace" . }}.
+{{- else if .Values.metrics.podAnnotations.enabled }}
+  Scraped via pod annotations (prometheus.io/scrape=true, path={{ .Values.metrics.path }}).
+{{- else }}
+  Exposed at {{ .Values.metrics.path }} on port {{ .Values.containerPorts.http }}, but no discovery is enabled.
+  Set metrics.serviceMonitor.enabled=true or metrics.podAnnotations.enabled=true to make Prometheus find it.
+{{- end }}
+  Warning: {{ .Values.metrics.path }} has no authentication. Restrict access via NetworkPolicy or a private topology.
+{{- end }}
