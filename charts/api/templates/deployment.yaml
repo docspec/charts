@@ -20,8 +20,14 @@ spec:
         {{- if .Values.podLabels }}
         {{- include "common.tplvalues.render" (dict "value" .Values.podLabels "context" $) | nindent 8 }}
         {{- end }}
-      {{- if .Values.podAnnotations }}
-      annotations: {{- include "common.tplvalues.render" (dict "value" .Values.podAnnotations "context" $) | nindent 8 }}
+      {{- $prometheusPodAnnotations := dict -}}
+      {{- if and .Values.metrics.enabled .Values.metrics.podAnnotations.enabled -}}
+      {{- $metricsPort := .Values.metrics.port | default .Values.containerPorts.http | toString -}}
+      {{- $prometheusPodAnnotations = dict "prometheus.io/scrape" "true" "prometheus.io/path" .Values.metrics.path "prometheus.io/port" $metricsPort -}}
+      {{- end -}}
+      {{- $podAnnotations := merge (dict) (.Values.podAnnotations | default dict) $prometheusPodAnnotations -}}
+      {{- if $podAnnotations }}
+      annotations: {{- include "common.tplvalues.render" (dict "value" $podAnnotations "context" $) | nindent 8 }}
       {{- end }}
     spec:
       serviceAccountName: {{ include "api.serviceAccountName" . }}

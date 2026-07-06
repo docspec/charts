@@ -102,6 +102,29 @@ readinessProbe:
   timeoutSeconds: 5
   failureThreshold: 3
 
+# /metrics has NO auth and shares the API port. Restrict via networkPolicy
+# (source-scoped) or a service-mesh policy. Do NOT expose it via Ingress.
+metrics:
+  enabled: true
+  path: /metrics
+  # Empty = fall back to containerPorts.http. Applies to the prometheus.io/port
+  # pod annotation only — ServiceMonitor uses the Service's named 'http' port.
+  port: ""
+  # Vanilla Prometheus kubernetes_sd_configs pod discovery.
+  podAnnotations:
+    enabled: false
+  # Prometheus Operator CRD. Requires monitoring.coreos.com/v1 in the cluster.
+  serviceMonitor:
+    enabled: false
+    interval: 30s
+    scrapeTimeout: 10s
+    honorLabels: false
+    scheme: http
+    labels: {}
+    namespaceSelector: {}
+    relabelings: []
+    metricRelabelings: []
+
 nodeSelector: {}
 tolerations: []
 affinity: {}
