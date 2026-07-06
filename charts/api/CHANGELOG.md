@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.0](https://github.com/docspec/charts/compare/api-v0.1.2...api-v0.2.0) (2026-07-06)
+
+
+### Features
+
+* **api:** add Prometheus metrics support ([95008a4](https://github.com/docspec/charts/commit/95008a496244670172de3690fce790f84a0c2476))
+
+
+### Bug Fixes
+
+* **api:** update to appVersion 1.20.1 of Rust implementation ([15b6d03](https://github.com/docspec/charts/commit/15b6d032810b42496c2cfda5044c4450e34b5144))
+
 ## [0.1.2](https://github.com/docspec/charts/compare/api-v0.1.1...api-v0.1.2) (2026-06-01)
 
 
