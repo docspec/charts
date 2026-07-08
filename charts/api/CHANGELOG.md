@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/docspec/charts/compare/api-v0.2.0...api-v0.2.1) (2026-07-08)
+
+
+### Bug Fixes
+
+* **deps:** update api to 0.21.0 ([0b6da4f](https://github.com/docspec/charts/commit/0b6da4f2fe1a595b9849f4ea5c15c7af766a44e9))
+
 ## [0.2.0](https://github.com/docspec/charts/compare/api-v0.1.2...api-v0.2.0) (2026-07-06)
 
 
