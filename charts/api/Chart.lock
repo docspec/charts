@@ -1,6 +1,6 @@
 dependencies:
 - name: common
   repository: oci://ghcr.io/docspec/charts
-  version: 0.1.0
-digest: sha256:95ae0fb91e1fdf11ebef816ec098a87711783f18b9a65f43e7cbb2c44e609ee2
-generated: "2026-04-28T15:17:40.367790072+02:00"
+  version: 0.2.0
+digest: sha256:147487ee81daa504567c225babf8f51cc413c8862b77b468a990b414dfb343c6
+generated: "2026-07-08T17:43:37.341893229+02:00"
