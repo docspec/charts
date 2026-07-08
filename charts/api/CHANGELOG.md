@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.2](https://github.com/docspec/charts/compare/api-v0.2.1...api-v0.2.2) (2026-07-08)
+
+
+### Bug Fixes
+
+* **api:** update docker image version to 1.21.2 ([4c13cb5](https://github.com/docspec/charts/commit/4c13cb538f6d2b7b2ccc5d6692a3bbc550f54bcc))
+
 ## [0.2.1](https://github.com/docspec/charts/compare/api-v0.2.0...api-v0.2.1) (2026-07-08)
 
 
