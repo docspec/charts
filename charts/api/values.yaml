@@ -8,7 +8,7 @@ replicaCount: 1
 image:
   registry: ghcr.io
   repository: docspec/api
-  tag: "1.21.0"
+  tag: "1.21.2"
   digest: ""
   pullPolicy: IfNotPresent
   pullSecrets: []
