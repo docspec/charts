@@ -3,7 +3,7 @@ apiVersion: v2
 name: api
 description: Helm chart for the docspec document conversion API
 type: application
-version: 0.2.1
+version: 0.2.2
 appVersion: 1.21.2
 kubeVersion: ">=1.28.0"
 home: https://github.com/docspec/charts
